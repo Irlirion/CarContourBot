@@ -1,0 +1,3 @@
+pyTelegramBotAPI
+cv2
+numpy

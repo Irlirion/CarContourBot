@@ -30,7 +30,7 @@ def get_contour(img):
     hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)  # меняем цветовую модель с BGR на HSV
     thresh = cv.inRange(hsv, hsv_min, hsv_max)  # применяем цветовой фильтр
     # ищем контуры и складируем их в переменную contours
-    _, contours, hierarchy = cv.findContours(thresh.copy(), cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv.findContours(thresh.copy(), cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
     # отображаем контуры поверх изображения
     cv.drawContours(img, contours, -1, (255, 0, 0), 3, cv.LINE_AA, hierarchy, 1)

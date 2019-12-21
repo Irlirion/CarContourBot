@@ -28,7 +28,8 @@ def get_contour(image):
     im2, contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
     img = np.full((image.shape[0], image.shape[1], 3), 255, dtype=np.uint8)
-
+    cnt = contours[4]
+    cv.drawContours(img, [cnt], 0, (0, 255, 0), 3)
     return img
 
 

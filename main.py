@@ -3,20 +3,34 @@ import cv2 as cv
 import numpy as np
 
 
+def auto_canny(image, sigma=0.33):
+	# compute the median of the single channel pixel intensities
+	v = np.median(image)
+ 
+	# apply automatic Canny edge detection using the computed median
+	lower = int(max(0, (1.0 - sigma) * v))
+	upper = int(min(255, (1.0 + sigma) * v))
+	edged = cv.Canny(image, lower, upper)
+ 
+	# return the edged image
+	return edged
+
 def get_contour(img):
     gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
-    blur = cv.GaussianBlur(gray,(1,1),1000)
-    flag, thresh = cv.threshold(blur, 70, 255, cv.THRESH_BINARY)
-    edged=cv.Canny(thresh,30,200)
+    blur = cv.GaussianBlur(gray,(5,5),1000)
+    _, thresh = cv.threshold(gray,80,255,cv.THRESH_BINARY)
+
     # Find contours
-    contours, hierarchy = cv.findContours(edged,cv.RETR_TREE,cv.CHAIN_APPROX_SIMPLE)
+    edged=auto_canny(thresh)
+    contours, _ = cv.findContours(edged,cv.RETR_TREE,cv.CHAIN_APPROX_SIMPLE)
     contours = sorted(contours, key=cv.contourArea,reverse=True) 
+
     # Select long perimeters only
-    perimeters = [cv.arcLength(contours[i],True) for i in range(len(contours))]
-    listindex=[i for i in range(int(len(perimeters)/3)) if perimeters[i]>perimeters[0]/4]
+    perimeters = [cv.arcLength(contour,True) for contour in contours]
+
     # Show image
     imgcont = np.full((img.shape[0], img.shape[1], 3), 255, dtype=np.uint8)  # create
-    [cv.drawContours(imgcont, [contours[i]], 0, (0,0,0), 5) for i in listindex]
+    [cv.drawContours(imgcont, [contours[i]], 0, (0,0,0), 2) for i, perimeter in enumerate(perimeters) if perimeter > perimeters[0] / 8]
 
     return imgcont
 

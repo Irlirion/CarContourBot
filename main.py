@@ -1,11 +1,6 @@
-!pip install pyTelegramBotAPI
 import telebot
 import cv2 as cv
 import numpy as np
-
-# параметры цветового фильтра
-hsv_min = np.array((2, 28, 65), np.uint8)
-hsv_max = np.array((26, 238, 255), np.uint8)
 
 
 def get_contour(img):

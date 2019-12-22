@@ -21,7 +21,7 @@ def get_contour(img):
     return imgcont
 
 
-bot = telebot.TeleBot('911809193:AAFhLS5-OSKrYaX0NcWV5V6N5bX1asfrACc')
+bot = telebot.TeleBot(token)
 
 
 @bot.message_handler(commands=['start'])
